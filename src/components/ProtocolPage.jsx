@@ -1,15 +1,33 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Chatbot from './Chatbot.jsx';
 import { PROTOCOLS } from '../lib/protocols/index.js';
 
 export default function ProtocolPage({ slug, onBack }) {
   const p = PROTOCOLS[slug];
+  const [sheetOpen, setSheetOpen] = useState(false);
+
+  // close the modal on Escape
+  useEffect(() => {
+    if (!sheetOpen) return;
+    const onKey = (e) => e.key === 'Escape' && setSheetOpen(false);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [sheetOpen]);
+
   if (!p) return null;
   const isLive = p.status === 'live';
 
   return (
     <div className="tools-page">
-      <button className="crumb" onClick={onBack}>← all tools</button>
+      <div className="protocol-toolbar">
+        <button className="crumb" onClick={onBack}>← all tools</button>
+        <button
+          className={`crumb crumb-action accent-${p.accent}`}
+          onClick={() => setSheetOpen(true)}
+        >
+          ⎘ protocol sheet
+        </button>
+      </div>
 
       <header className="tools-head">
         <div className={`kicker accent-text-${p.accent}`}>
@@ -20,32 +38,28 @@ export default function ProtocolPage({ slug, onBack }) {
       </header>
 
       {isLive ? (
-        <div className="tools-body">
+        <div className="chat-wrap">
           <Chatbot protocol={p} />
-          <aside className="tools-aside">
-            <h3>How to use it</h3>
-            <ol>
-              {p.howto.map((step, i) => (
-                <li key={i}>{step}</li>
-              ))}
-            </ol>
-          </aside>
         </div>
       ) : (
         <div className="soon-banner">
-          The live chatbot for this protocol is still being built. The protocol
-          sheet below works in any AI tool today.
+          The live chatbot for this protocol is still being built. Open the
+          protocol sheet — it works in any AI tool today.
         </div>
       )}
 
-      <PasteSheet protocol={p} />
+      {sheetOpen && (
+        <ProtocolSheetModal
+          protocol={p}
+          onClose={() => setSheetOpen(false)}
+        />
+      )}
     </div>
   );
 }
 
-// The protocol-sheet panel: shown for every protocol, live or soon. Copy or
-// download to paste into ChatGPT, Claude, Gemini — whatever the participant uses.
-function PasteSheet({ protocol: p }) {
+// ── modal ────────────────────────────────────────────────────────
+function ProtocolSheetModal({ protocol: p, onClose }) {
   const [copied, setCopied] = useState(false);
 
   async function copy() {
@@ -53,9 +67,7 @@ function PasteSheet({ protocol: p }) {
       await navigator.clipboard.writeText(p.paste);
       setCopied(true);
       setTimeout(() => setCopied(false), 1800);
-    } catch {
-      /* clipboard may be blocked — the textarea is selectable below */
-    }
+    } catch { /* clipboard blocked — text is selectable */ }
   }
 
   function download() {
@@ -73,22 +85,46 @@ function PasteSheet({ protocol: p }) {
   }
 
   return (
-    <section className={`paste-sheet accent-${p.accent}`}>
-      <header className="paste-head">
-        <h3>Protocol sheet — paste into any AI tool</h3>
-        <div className="paste-actions">
+    <div className="modal-backdrop" onClick={onClose}>
+      <div
+        className={`modal accent-${p.accent}`}
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${p.name} protocol sheet`}
+      >
+        <header className="modal-head">
+          <div>
+            <div className={`kicker accent-text-${p.accent}`}>protocol sheet</div>
+            <h3>{p.name}</h3>
+          </div>
+          <button className="modal-close" onClick={onClose} aria-label="close">✕</button>
+        </header>
+
+        <div className="modal-actions">
           <button className="paste-btn" onClick={copy}>
-            {copied ? '✓ copied' : '⧉ copy'}
+            {copied ? '✓ copied' : '⎘ copy'}
           </button>
           <button className="paste-btn" onClick={download}>↓ download .md</button>
         </div>
-      </header>
-      <p className="paste-help">
-        Open ChatGPT, Claude, Gemini, or whatever you use — paste this in,
-        replace the <code>&lt;describe it&gt;</code> bit with your real problem,
-        and the protocol is running.
-      </p>
-      <textarea className="paste-text" readOnly value={p.paste} />
-    </section>
+
+        <p className="paste-help">
+          Open ChatGPT, Claude, Gemini, or whatever you use — paste this in,
+          replace the <code>&lt;describe it&gt;</code> bit with your real
+          problem, and the protocol is running.
+        </p>
+
+        <textarea className="paste-text" readOnly value={p.paste} />
+
+        {p.howto && (
+          <details className="modal-howto">
+            <summary>How to use this protocol</summary>
+            <ol>
+              {p.howto.map((step, i) => <li key={i}>{step}</li>)}
+            </ol>
+          </details>
+        )}
+      </div>
+    </div>
   );
 }
