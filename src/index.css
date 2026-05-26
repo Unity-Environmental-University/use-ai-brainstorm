@@ -1,0 +1,360 @@
+/* ── Brainstorm & Decide — protocol library ──────────────────────
+   Aesthetic: whiteboard marker. Honest, hand-drawn, emotional.
+   Type stays out of the protocol cards' way. */
+
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --ink: #1a1a1a;
+  --paper: #fcfcf8;
+  --paper-2: #f3f1e8;
+  --muted: #6b6657;
+
+  /* marker palette */
+  --red: #ee2b2b;
+  --blue: #1d35f5;
+  --sky: #2bb6e8;
+  --green: #2fd02f;
+  --yellow: #e8d23a;
+  --purple: #d63bd6;
+
+  --sans: 'Inter', system-ui, sans-serif;
+  --hand: 'Caveat', cursive;
+
+  font: 18px/1.55 var(--sans);
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); }
+#root { min-height: 100svh; }
+
+.hand { font-family: var(--hand); }
+
+h2 {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  letter-spacing: -0.02em;
+  margin: 0 0 0.6rem;
+  font-weight: 700;
+}
+h3 {
+  font-family: var(--hand);
+  font-size: 2rem;
+  margin: 0 0 0.2rem;
+}
+p { margin: 0 0 1rem; max-width: 62ch; }
+
+.kicker {
+  font-family: var(--hand);
+  font-size: 1.6rem;
+  color: var(--red);
+  transform: rotate(-2deg);
+}
+
+.lead { font-size: 1.2rem; color: var(--muted); }
+
+/* ── top nav ───────────────────────────────────────────────────── */
+
+.topnav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1.4rem;
+  border-bottom: 2px solid var(--ink);
+  background: var(--paper);
+}
+.topnav-brand { font-size: 1.5rem; }
+.topnav nav { display: flex; gap: 0.4rem; }
+.topnav-link {
+  font: inherit;
+  font-weight: 600;
+  background: none;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  padding: 0.3rem 0.9rem;
+  cursor: pointer;
+  color: var(--muted);
+}
+.topnav-link:hover { color: var(--ink); }
+.topnav-link.on {
+  color: var(--ink);
+  border-color: var(--ink);
+  background: var(--yellow);
+}
+
+.page { min-height: calc(100svh - 52px); }
+
+/* ── tools page ────────────────────────────────────────────────── */
+
+.tools-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem 4rem;
+}
+.tools-head { text-align: center; margin-bottom: 1.6rem; }
+.tools-head .lead { margin: 0 auto; }
+
+.tools-body {
+  display: grid;
+  grid-template-columns: minmax(0, 720px) 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+.tools-aside {
+  text-align: left;
+  border: 3px solid var(--ink);
+  border-radius: 16px 10px 18px 8px;
+  padding: 1.2rem 1.4rem;
+  background: var(--paper-2);
+}
+.tools-aside h3 { color: var(--ink); margin-bottom: 0.4rem; }
+.tools-aside ol { margin: 0 0 0.6rem; padding-left: 1.3rem; }
+.tools-aside li { margin: 0.4rem 0; }
+
+@media (max-width: 900px) {
+  .tools-body { grid-template-columns: 1fr; }
+}
+
+/* ── accent system (per protocol) ──────────────────────────────── */
+
+.accent-sky    { --a: var(--sky);    --a-bg: #e8f4fb; }
+.accent-green  { --a: var(--green);  --a-bg: #ddf3e4; }
+.accent-purple { --a: var(--purple); --a-bg: #f6e3f6; }
+.accent-yellow { --a: #c9ad1f;       --a-bg: #f8f0c4; }
+.accent-red    { --a: var(--red);    --a-bg: #fbece8; }
+
+.accent-text-sky    { color: var(--sky); }
+.accent-text-green  { color: #1f9c1f; }
+.accent-text-purple { color: var(--purple); }
+.accent-text-yellow { color: #b59a12; }
+.accent-text-red    { color: var(--red); }
+
+.chat.accent-sky    { border-color: var(--sky); }
+.chat.accent-green  { border-color: #1f9c1f; }
+.chat.accent-purple { border-color: var(--purple); }
+.chat.accent-yellow { border-color: #c9ad1f; }
+.chat.accent-red    { border-color: var(--red); }
+.phase-pill.accent-sky    { background: #d3ecf8; }
+.phase-pill.accent-green  { background: #cdeed6; }
+.phase-pill.accent-purple { background: #efd3ef; }
+.phase-pill.accent-yellow { background: #f3e7a8; }
+.phase-pill.accent-red    { background: #f8d8d3; }
+
+/* ── protocol index grid ───────────────────────────────────────── */
+
+.protocol-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.2rem;
+  margin-top: 1.8rem;
+}
+.protocol-card {
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  border: 3px solid var(--ink);
+  border-radius: 18px 10px 20px 8px;
+  padding: 1.2rem 1.3rem 1rem;
+  background: var(--a-bg, #fff);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  transition: transform 0.1s;
+}
+.protocol-card:hover { transform: translateY(-3px) rotate(-0.6deg); }
+.protocol-card h3 { color: var(--ink); margin: 0; }
+.card-tagline { font-size: 0.95rem; color: var(--muted); margin: 0; }
+.card-go {
+  font-size: 1.25rem;
+  margin-top: auto;
+  color: var(--a, var(--ink));
+}
+
+.crumb {
+  font-family: var(--hand);
+  font-size: 1.3rem;
+  background: none;
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  padding: 0.15rem 0.8rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.soon-banner {
+  border: 2px dashed var(--ink);
+  background: var(--paper-2);
+  padding: 0.8rem 1.1rem;
+  border-radius: 12px;
+  text-align: left;
+  margin: 0.5rem 0 1.5rem;
+  font-family: var(--hand);
+  font-size: 1.3rem;
+}
+
+/* ── chatbot ───────────────────────────────────────────────────── */
+
+.chat {
+  width: 100%;
+  max-width: 720px;
+  border: 3px solid var(--ink);
+  border-radius: 20px 12px 22px 10px;
+  display: flex;
+  flex-direction: column;
+  height: min(78vh, 720px);
+  min-height: 520px;
+  background: #fff;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.chat-head {
+  padding: 0.7rem 1.1rem;
+  border-bottom: 2px solid var(--ink);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--paper-2);
+}
+.phase-pill {
+  font-family: var(--hand);
+  font-size: 1.4rem;
+  padding: 0.1rem 0.9rem;
+  border: 2px solid var(--ink);
+  border-radius: 20px;
+}
+
+.chat-log {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+  padding: 1.4rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: left;
+  scrollbar-width: thin;
+  scrollbar-color: #c8c4b8 transparent;
+}
+.chat-log::-webkit-scrollbar { width: 10px; }
+.chat-log::-webkit-scrollbar-thumb {
+  background: #d4d0c4;
+  border-radius: 6px;
+  border: 2px solid #fff;
+}
+.msg {
+  padding: 0.75rem 1rem;
+  border-radius: 14px;
+  max-width: 82%;
+  white-space: pre-wrap;
+  line-height: 1.55;
+}
+.msg.user { align-self: flex-end; background: var(--blue); color: #fff; border-radius: 14px 14px 4px 14px; }
+.msg.ai   { align-self: flex-start; background: var(--paper-2); border: 1px solid #ddd; border-radius: 14px 14px 14px 4px; }
+.msg.sys  { align-self: center; font-family: var(--hand); font-size: 1.25rem; color: var(--muted); }
+
+.chat-input {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.7rem;
+  border-top: 2px solid var(--ink);
+}
+.chat-input textarea {
+  flex: 1;
+  resize: none;
+  font: inherit;
+  font-size: 1rem;
+  padding: 0.5rem 0.7rem;
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  height: 2.6rem;
+}
+.chat-input button {
+  font-family: var(--hand);
+  font-size: 1.3rem;
+  border: 3px solid var(--ink);
+  background: var(--yellow);
+  border-radius: 10px 6px 12px 6px;
+  padding: 0 1rem;
+  cursor: pointer;
+}
+.chat-input button:disabled { opacity: 0.4; cursor: default; }
+
+.chat-actions {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  padding: 0.6rem;
+  border-top: 2px dashed #ccc;
+}
+.chat-actions button {
+  font-family: var(--hand);
+  font-size: 1.2rem;
+  border: 2px solid var(--ink);
+  background: #fff;
+  border-radius: 10px;
+  padding: 0.2rem 0.9rem;
+  cursor: pointer;
+}
+.chat-actions button.go { background: var(--green); }
+
+.dots-typing { font-family: var(--hand); color: var(--muted); }
+
+/* ── paste-sheet panel ─────────────────────────────────────────── */
+
+.paste-sheet {
+  margin-top: 2rem;
+  border: 3px solid var(--ink);
+  border-radius: 18px 10px 20px 8px;
+  background: var(--a-bg, var(--paper-2));
+  padding: 1.2rem 1.4rem 1.4rem;
+  text-align: left;
+}
+.paste-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.4rem;
+  flex-wrap: wrap;
+}
+.paste-head h3 { margin: 0; color: var(--ink); }
+.paste-actions { display: flex; gap: 0.5rem; }
+.paste-btn {
+  font-family: var(--hand);
+  font-size: 1.2rem;
+  border: 2px solid var(--ink);
+  background: #fff;
+  border-radius: 10px;
+  padding: 0.2rem 0.9rem;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+.paste-btn:hover { transform: translateY(-2px); }
+.paste-help { color: var(--muted); font-size: 0.95rem; margin: 0.2rem 0 0.7rem; }
+.paste-help code {
+  font-family: ui-monospace, Consolas, monospace;
+  background: #fff;
+  border: 1px solid var(--ink);
+  border-radius: 4px;
+  padding: 0 0.3em;
+  font-size: 0.85em;
+}
+.paste-text {
+  width: 100%;
+  min-height: 220px;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  padding: 0.7rem 0.9rem;
+  background: #fff;
+  resize: vertical;
+}
