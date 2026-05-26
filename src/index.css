@@ -112,6 +112,10 @@ p { margin: 0 0 1rem; max-width: 62ch; }
   border-radius: 16px 10px 18px 8px;
   padding: 1.2rem 1.4rem;
   background: var(--paper-2);
+  /* stays in view while you scroll a long conversation */
+  position: sticky;
+  top: 64px; /* clears the topnav */
+  align-self: start;
 }
 .tools-aside h3 { color: var(--ink); margin-bottom: 0.4rem; }
 .tools-aside ol { margin: 0 0 0.6rem; padding-left: 1.3rem; }
@@ -207,11 +211,10 @@ p { margin: 0 0 1rem; max-width: 62ch; }
   border-radius: 20px 12px 22px 10px;
   display: flex;
   flex-direction: column;
-  height: min(78vh, 720px);
-  min-height: 520px;
   background: #fff;
-  overflow: hidden;
-  flex-shrink: 0;
+  /* the log grows with the page; no inner scroll trap.
+     room at the bottom so the sticky input doesn't cover content. */
+  padding-bottom: 5.5rem;
 }
 .chat-head {
   padding: 0.7rem 1.1rem;
@@ -230,23 +233,12 @@ p { margin: 0 0 1rem; max-width: 62ch; }
 }
 
 .chat-log {
-  flex: 1;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  scroll-behavior: smooth;
+  /* no inner scroll — log expands; page scrolls. */
   padding: 1.4rem 1.6rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   text-align: left;
-  scrollbar-width: thin;
-  scrollbar-color: #c8c4b8 transparent;
-}
-.chat-log::-webkit-scrollbar { width: 10px; }
-.chat-log::-webkit-scrollbar-thumb {
-  background: #d4d0c4;
-  border-radius: 6px;
-  border: 2px solid #fff;
 }
 .msg {
   padding: 0.75rem 1rem;
@@ -260,10 +252,15 @@ p { margin: 0 0 1rem; max-width: 62ch; }
 .msg.sys  { align-self: center; font-family: var(--hand); font-size: 1.25rem; color: var(--muted); }
 
 .chat-input {
+  /* sticks to the bottom of the viewport — always reachable. */
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
   display: flex;
   gap: 0.5rem;
   padding: 0.7rem;
   border-top: 2px solid var(--ink);
+  background: #fff;
 }
 .chat-input textarea {
   flex: 1;

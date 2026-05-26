@@ -19,7 +19,8 @@ export default function Chatbot({ protocol }) {
   }, [protocol]);
 
   useEffect(() => {
-    logEnd.current?.scrollIntoView({ behavior: 'smooth' });
+    // scroll the page so the latest message sits just above the sticky input
+    logEnd.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
   }, [log, busy]);
 
   const ph = protocol.phases[phase];
