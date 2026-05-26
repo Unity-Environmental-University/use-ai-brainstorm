@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Chatbot from './Chatbot.jsx';
-import { PROTOCOLS } from '../lib/protocols.js';
+import { PROTOCOLS } from '../lib/protocols/index.js';
 
 export default function ProtocolPage({ slug, onBack }) {
   const p = PROTOCOLS[slug];

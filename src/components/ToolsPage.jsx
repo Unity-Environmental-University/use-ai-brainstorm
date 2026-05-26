@@ -1,4 +1,4 @@
-import { PROTOCOL_LIST } from '../lib/protocols.js';
+import { PROTOCOL_LIST } from '../lib/protocols/index.js';
 
 // Tools index — the landing page. Shows the live protocols only.
 export default function ToolsPage({ onOpen }) {
